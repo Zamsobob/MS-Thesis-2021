@@ -203,16 +203,3 @@ parfor s = 1:length(subject_list) % PARALLEL COMPUTING TOOLBOX (parfor)
 end
 
 fprintf('\n\n\n**** LEMON PREPROCESSING 1 FINISHED ****\n\n\n');
-
-% HOW TO GET RANK OF DATA (BEFORE ICA AND BEFORE EPOCHING)
-% dataRank = sum(eig(cov(double(EEG.data'))) > 1E-7);
-
-% TRY CATCH ERRORS: https://www.mathworks.com/matlabcentral/answers/462297-try-catch-on-script-for-any-error
-% REMOVE THE SAVED .MAT FILES IF EVERYTHING WORKS AS IT SHOULD. PRECAUTION
-% TRY CATCH IN THE BEGINNING WHEN IMPORTING SUB. SEE LUCK GIT? SAVE SUBS
-% THAT IT SKIPPED IN VARIABLES
-
-
-
-% Store chandiff in EEG structure so I do not have to recreate it again in
-% script 2. Use this method more frequently, I can make my own substructure.
