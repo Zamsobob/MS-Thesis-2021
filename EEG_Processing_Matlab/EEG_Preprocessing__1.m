@@ -8,11 +8,14 @@
 % sub-010203. The VMRK-file is empty. 
 % sub-010285. The VMRK-file is missing markers, cannot be read by EEGLAB
 % sub-010235, sub-010237, sub-010259, sub-010281, & sub-010293. No data in files.
+% This resulted in 213 subjects.
 % 
 % 
 % EEGLAB PREFERENCES (STORE 1 DATASET AND DOUBLE PRECISSION) USED:
 % pop_editoptions('option_storedisk', 1);
 % pop_editoptions('option_single', 0);
+%
+% addpath(YourPathtoEEGLAB); % EEGLAB TO PATH
 % 
 % Sources:
 % https://doi.org/10.1038/sdata.2018.308
@@ -26,15 +29,12 @@
 save_everything = 1;
 
 % SET PATHS
-addpath('C:\Users\Mar Nil\Desktop\MATLABdirectory\eeglab2021.0'); % EEGLAB TO PATH
 eegfolder = [pwd filesep]; % EEG_MPILMBB_LEMON. PATH TO SCRIPTS
 rawfolder = [eegfolder 'EEG_Raw_BIDS_ID\']; % RAW FILES
 localizer = [eegfolder 'EEG_Localizer_BIDS_ID\Channel_Loc_62_EOG.ced']; % PATH TO CHANNEL LOCATIONS
 file_ext = '.vhdr'; % FILE EXTENSION OF RAW FILES
 
-%% --------------------------NO FURTHER SETTINGS NECESSARY-----------------------------------------
-
-% CREATE FOLDERS FOR THE PREPROCESSED DATA - FIX FOLDERS
+% CREATE FOLDERS FOR THE PREPROCESSED DATA
 if~exist('EEG_Preprocessed', 'dir')
     mkdir 'EEG_Preprocessed' 'EEG_Intermediate'
 end
@@ -43,6 +43,7 @@ rsdir = [ppfolder 'EEG_Intermediate'];
 
 if~exist('EEG_Statistics', 'dir')
     mkdir 'EEG_Statistics'
+end
 statdir = [eegfolder 'EEG_Statistics'];
 cd (ppfolder);
 
@@ -99,15 +100,23 @@ parfor s = 1:length(subject_list) % PARALLEL COMPUTING TOOLBOX (parfor)
     
     %% FILTERING
     
-    % HIGH-PASS FILTER 1 HZ. 827 POINTS. CUTOFF FREQUENCY (~6dB): 0.5 Hz.
-    % ZERO-PHASE. NON-CAUSAL (FIRFILT).
-    EEG = pop_eegfiltnew(EEG, 'locutoff',1);
+    % HIGH-PASS FILTER 1 HZ
+    EEG = pop_eegfiltnew(EEG, 'locutoff',2);
+%     pop_eegfiltnew() - performing 415 point highpass filtering (Order = length - 1).
+%     pop_eegfiltnew() - transition band width: 2 Hz
+%     pop_eegfiltnew() - passband edge(s): 2 Hz
+%     pop_eegfiltnew() - cutoff frequency(ies) (-6 dB): 1 Hz
+%     pop_eegfiltnew() - filtering the data (zero-phase, non-causal)
     
-    % LOW-PASS FILTER 45 HZ TO SUPPRESS POSSIBLE LINE NOISE. 75 points.
-    % CUTOFF FREQUENCY (~6dB): 50.625 Hz. ZERO-PHASE, NON-CAUSAL (FIRFILT)
-    EEG = pop_eegfiltnew(EEG, 'hicutoff',45);
+    % LOW-PASS FILTER 49.5 HZ TO SUPPRESS POSSIBLE LINE NOISE
+    EEG = pop_eegfiltnew(EEG, 'hicutoff',44);
     EEG.setname = [subject '_Filter']; % NAME FOR DATASET MENU
-   
+%     pop_eegfiltnew() - performing 77 point lowpass filtering.
+%     pop_eegfiltnew() - transition band width: 11 Hz
+%     pop_eegfiltnew() - passband edge(s): 44 Hz
+%     pop_eegfiltnew() - cutoff frequency(ies) (-6 dB): 49.5 Hz
+%     pop_eegfiltnew() - filtering the data (zero-phase, non-causal)
+
     % SAVE FILTERED DATA
     if (save_everything)
     EEG = pop_saveset(EEG, 'filename',[subject '_Filt'], ...
@@ -116,11 +125,11 @@ parfor s = 1:length(subject_list) % PARALLEL COMPUTING TOOLBOX (parfor)
     
     %% ARTIFACT REMOVAL WITH CLEAN RAW DATA AND ARTIFACT SUBSPACE RECONSTRUCTION (ASR)
     
-    % SAVE ORIGINAL DATA BEFORE REMOVING BAD CHANNELS
-    originalchanlocs = EEG.chanlocs; % FOR INTERPOLATION LATER
-    oldchans = {EEG.chanlocs.labels};
-    origEEG = EEG;
-    
+        % SAVE ORIGINAL DATA BEFORE REMOVING BAD CHANNELS
+        originalchanlocs = EEG.chanlocs; % FOR INTERPOLATION LATER
+        oldchans = {EEG.chanlocs.labels};
+        origEEG = EEG;
+
      % USE CLEAN_RAWDATA TO IDENTIFY CHANNELS FOR REMOVAL
     EEG = pop_clean_rawdata(EEG, 'FlatlineCriterion', 5, ...
         'ChannelCriterion', 0.8, ...
