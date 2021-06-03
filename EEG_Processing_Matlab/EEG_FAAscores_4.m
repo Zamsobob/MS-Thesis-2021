@@ -6,15 +6,14 @@
 % EEGLAB PREFERENCES (STORE 1 DATASET AND DOUBLE PRECISSION) USED:
 % pop_editoptions('option_storedisk', 1);
 % pop_editoptions('option_single', 0);
-
+%
+% addpath(YourPathToEEGLAB); % EEGLAB TO PATH
+%
 %% INITIAL SETUP
 
 % PATH TO THE NECESSARY FOLDERS
-addpath('C:\Users\Mar Nil\Desktop\MATLABdirectory\eeglab2021.0'); % EEGLAB TO PATH
 eegfolder = [pwd filesep]; % EEG_MPILMBB_LEMON. PATH TO SCRIPTS
 rawfolder = [eegfolder 'EEG_Raw_BIDS_ID\']; % RAW FILES
-
-%% --------------------------NO FURTHER SETTINGS NECESSARY-----------------------------------------
 
 % SET UP FOLDERS AND PATHS
 ppfolder = [eegfolder 'EEG_Preprocessed\'];
@@ -45,7 +44,7 @@ for s = 1:length(subject_list)
     
     subject = subject_list{s};
     
-    % LOAD PREPROCESSED EO AND EC DATASETS
+    % LOAD PREPROCESSED DATASETS
     EEG = pop_loadset('filename',[subject '_CSD_Estimates.set'],'filepath', csdfolder);
    
     %% ANALYSIS OF ALL CHANNELS
@@ -80,6 +79,7 @@ for s = 1:length(subject_list)
     
     % CREATE MATRIX OF ASYMMETRY SCORES IN DB. ROWS ARE ELECTRODE PAIRS, COLUMNS ARE SUBJECTS
     % FROM ROW 1 TO 4: F2-F1, F4-F3, F6-F5, F8-F7. TRANSPOSE LATER
+    % ALPHA POWER IN DB WAS CALCULATED FOR A DIFFERENT PROJECT
     for i = 1:numelecpairs
         asymmetrydB(i, s) = alphapowerdB(nchans_right(i),s) - alphapowerdB(nchans_left(i),s);
     end
