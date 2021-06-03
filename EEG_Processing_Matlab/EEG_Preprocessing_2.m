@@ -9,7 +9,9 @@
 % EEGLAB PREFERENCES (STORE 1 DATASET AND DOUBLE PRECISSION) USED:
 % pop_editoptions('option_storedisk', 1);
 % pop_editoptions('option_single', 0);
-
+%
+% addpath(YourPathToEEGLAB); % EEGLAB TO PATH
+%
 %% INITIAL SETUP
 
 % SET VARIABLE TO 1 TO SAVE INTERMEDIATE STEPS. SET TO 0 TO SAVE
@@ -17,13 +19,10 @@
 save_everything = 1;
 
 % SET PATHS
-addpath('C:\Users\Mar Nil\Desktop\MATLABdirectory\eeglab2021.0'); % EEGLAB TO PATH
 eegfolder = [pwd filesep]; % EEG_MPILMBB_LEMON. PATH TO SCRIPTS
 rawfolder = [eegfolder 'EEG_Raw_BIDS_ID\']; % RAW FILES
 localizer = [eegfolder 'EEG_Localizer_BIDS_ID\Channel_Loc_62_EOG.ced']; % PATH TO CHANNEL LOCATIONS
 file_ext = '.vhdr'; % FILE EXTENSION OF RAW FILES
-
-%% --------------------------NO FURTHER SETTINGS NECESSARY-----------------------------------------
 
 % FOLDERS FOR PREPROCESSED DATA
 ppfolder = [eegfolder 'EEG_Preprocessed\'];
@@ -174,13 +173,3 @@ writetable(diagnostTable, 'Diagnostics.csv', 'Delimiter',',','QuoteStrings',fals
 
 cd (eegfolder);
 fprintf('\n\n\n**** LEMON PREPROCESSING 2 FINISHED ****\n\n\n');
-
-% HOW TO GET RANK OF DATA (BEFORE ICA AND BEFORE EPOCHING):
-% dataRank = sum(eig(cov(double(EEG.data'))) > 1E-7);
-
-% TRY CATCH ERRORS: https://www.mathworks.com/matlabcentral/answers/462297-try-catch-on-script-for-any-error
-% IN THE BEGINNING WHEN IMPORTING SUB. SEE LUCK GIT?
-
-% Change IClabel to only eyes and muscles?
-% Do not forget about electrode location data that was measured for a subset
-% of the participants. What to do there?
