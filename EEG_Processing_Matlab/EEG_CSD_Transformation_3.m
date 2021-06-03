@@ -8,15 +8,14 @@
 % EEGLAB PREFERENCES (STORE 1 DATASET AND DOUBLE PRECISSION) USED:
 % pop_editoptions('option_storedisk', 1);
 % pop_editoptions('option_single', 0);
-
+%
+% addpath(YourPathToEEGLAB); % EEGLAB TO PATH
+%
 %% INITIAL SETUP
 
 % PATH TO THE NECESSARY FOLDERS
-addpath('C:\Users\Mar Nil\Desktop\MATLABdirectory\eeglab2021.0'); % EEGLAB TO PATH
 eegfolder = [pwd filesep]; % EEG_MPILMBB_LEMON. PATH TO SCRIPTS
 rawfolder = [eegfolder 'EEG_Raw_BIDS_ID\']; % RAW FILES
-
-%% --------------------------NO FURTHER SETTINGS NECESSARY-----------------------------------------
 
 % SET UP FOLDERS AND PATHS
 ppfolder = [eegfolder 'EEG_Preprocessed\'];
