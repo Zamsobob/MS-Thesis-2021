@@ -1,11 +1,14 @@
-# Distributions of the scores on motivational and personality variables for young and old adults.
+# Distributions (density plots) of the scores on motivational and personality variables for young and old adults.
+
+library(readxl) # for importing xls
+library(tidyverse) # Data manipulation
+library(ggpubr) # Data visualization (including ggplot2)
 
 # Load data
 # Path to dataLemon file
 exportdirxls <- "D:\\MPI_LEMON\\EEG_MPILMBB_LEMON\\EEG_Statistics\\DataLemon.xlsx"
 
 # Import data
-library(readxl)
 Data <- data.frame(read_excel(exportdirxls, 1, col_names = TRUE))
 row.names(Data) <- Data[,1]
 Data <- Data[,-1]
@@ -14,18 +17,35 @@ Data[,19] <- factor(Data[,19])
 Data[,20] <- factor(Data[,20])
 Data[,21] <- factor(Data[,21])
 
-data.distr <- cbind(Data[,-c(1:4,19,21)])
+# Create density plots.
+p1=Data%>%ggplot(aes(x=BAS.Drive,fill=Age))+geom_rug(aes(color=Age))+geom_density(alpha=0.5)+theme_bw()+geom_vline(xintercept = c(4,16),linetype="dashed",color=c("black","black"))+theme(legend.position = "none",axis.title.x = element_blank(),axis.title.y = element_blank())+ggtitle("BAS Drive")+theme(plot.title = element_text(hjust = 0.5))
+p2=Data%>%ggplot(aes(x=BAS.Fun,fill=Age))+geom_rug(aes(color=Age))+geom_density(alpha=0.5)+theme_bw()+geom_vline(xintercept = c(4,16),linetype="dashed",color=c("black","black"))+theme(legend.position = "none",axis.title.x = element_blank(),axis.title.y = element_blank())+ggtitle("BAS Fun Seeking")+theme(plot.title = element_text(hjust = 0.5))
+p3=Data%>%ggplot(aes(x=BAS.Reward,fill=Age))+geom_rug(aes(color=Age))+geom_density(alpha=0.5)+theme_bw()+geom_vline(xintercept = c(5,20),linetype="dashed",color=c("black","black"))+theme(legend.position = "none",axis.title.x = element_blank(),axis.title.y = element_blank())+ggtitle("BAS Reward Responsiveness")+theme(plot.title = element_text(hjust = 0.5))
+p4=Data%>%ggplot(aes(x=BIS,fill=Age))+geom_rug(aes(color=Age))+geom_density(alpha=0.5)+theme_bw()+geom_vline(xintercept = c(7,28),linetype="dashed",color=c("black","black"))+theme(legend.position = "none",axis.title.x = element_blank(),axis.title.y = element_blank())+ggtitle("BIS")+theme(plot.title = element_text(hjust = 0.5)) # MEAN
+p5=Data%>%ggplot(aes(x=NEOFFI.Neuroticism,fill=Age))+geom_rug(aes(color=Age))+geom_density(alpha=0.5)+theme_bw()+geom_vline(xintercept = c(0,4),linetype="dashed",color=c("black","black"))+theme(legend.position = "none",axis.title.x = element_blank(),axis.title.y = element_blank())+ggtitle("Neuroticism")+theme(plot.title = element_text(hjust = 0.5))
+p6=Data%>%ggplot(aes(x=NEOFFI.Extraversion,fill=Age))+geom_rug(aes(color=Age))+geom_density(alpha=0.5)+theme_bw()+geom_vline(xintercept = c(0,4),linetype="dashed",color=c("black","black"))+theme(legend.position = "none",axis.title.x = element_blank(),axis.title.y = element_blank())+ggtitle("Extraversion")+theme(plot.title = element_text(hjust = 0.5)) # MEAN
+p7=Data%>%ggplot(aes(x=NEOFFI.OpennessForExperiences,fill=Age))+geom_rug(aes(color=Age))+geom_density(alpha=0.5)+theme_bw()+geom_vline(xintercept = c(0,4),linetype="dashed",color=c("black","black"))+theme(legend.position = "none",axis.title.x = element_blank(),axis.title.y = element_blank())+ggtitle("Openness for Experience")+theme(plot.title = element_text(hjust = 0.5))
+p8=Data%>%ggplot(aes(x=NEOFFI.Agreeableness,fill=Age))+geom_rug(aes(color=Age))+geom_density(alpha=0.5)+theme_bw()+geom_vline(xintercept = c(0,4),linetype="dashed",color=c("black","black"))+theme(legend.position = "none",axis.title.x = element_blank(),axis.title.y = element_blank())+ggtitle("Agreeableness")+theme(plot.title = element_text(hjust = 0.5)) # MEAN
+p9=Data%>%ggplot(aes(x=NEOFFI.Conscientiousness,fill=Age))+geom_rug(aes(color=Age))+geom_density(alpha=0.5)+theme_bw()+geom_vline(xintercept = c(0,4),linetype="dashed",color=c("black","black"))+theme(legend.position = "none",axis.title.x = element_blank(),axis.title.y = element_blank())+ggtitle("Conscientiousness")+theme(plot.title = element_text(hjust = 0.5))
+p10=Data%>%ggplot(aes(x=STAI.TRAIT.ANXIETY,fill=Age))+geom_rug(aes(color=Age))+geom_density(alpha=0.5)+theme_bw()+geom_vline(xintercept = c(20,80),linetype="dashed",color=c("black","black"))+theme(legend.position = "none",axis.title.x = element_blank(),axis.title.y = element_blank())+ggtitle("Trait Anxiety")+theme(plot.title = element_text(hjust = 0.5))
+p11=Data%>%ggplot(aes(x=UPPS.urgency,fill=Age))+geom_rug(aes(color=Age))+geom_density(alpha=0.5)+theme_bw()+geom_vline(xintercept = c(12,48),linetype="dashed",color=c("black","black"))+theme(legend.position = "none",axis.title.x = element_blank(),axis.title.y = element_blank())+ggtitle("Urgency")+theme(plot.title = element_text(hjust = 0.5)) # MEAN
+p12=Data%>%ggplot(aes(x=UPPS.lack.premeditation,fill=Age))+geom_rug(aes(color=Age))+geom_density(alpha=0.5)+theme_bw()+geom_vline(xintercept = c(11,44),linetype="dashed",color=c("black","black"))+theme(legend.position = "none",axis.title.x = element_blank(),axis.title.y = element_blank())+ggtitle("Premeditation")+theme(plot.title = element_text(hjust = 0.5)) # MEAN
+p13=Data%>%ggplot(aes(x=UPPS.lack.perseverance,fill=Age))+geom_rug(aes(color=Age))+geom_density(alpha=0.5)+theme_bw()+geom_vline(xintercept = c(10,40),linetype="dashed",color=c("black","black"))+theme(legend.position = "none",axis.title.x = element_blank(),axis.title.y = element_blank())+ggtitle("Perseverance")+theme(plot.title = element_text(hjust = 0.5)) # MEAN
+p14=Data%>%ggplot(aes(x=UPPS.sens.seek,fill=Age))+geom_rug(aes(color=Age))+geom_density(alpha=0.5)+theme_bw()+geom_vline(xintercept = c(12,48),linetype="dashed",color=c("black","black"))+theme(legend.position = "none",axis.title.x = element_blank(),axis.title.y = element_blank())+ggtitle("Sensation Seeking")+theme(plot.title = element_text(hjust = 0.5))
+p15=Data%>%ggplot(aes(x=Hamilton.Scale,fill=Age))+geom_rug(aes(color=Age))+geom_density(alpha=0.5)+theme_bw()+geom_vline(xintercept = c(0,17),linetype="dashed",color=c("black","black"))+theme(legend.position = "none",axis.title.x = element_blank(),axis.title.y = element_blank())+ggtitle("HAM-D")+theme(plot.title = element_text(hjust = 0.5))
+
+# Create figure
+plot <- ggarrange(p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,
+                   ncol = 3, nrow = 5,
+                   common.legend = TRUE, legend = "bottom") # +theme(panel.border = element_rect(colour = "black", fill=NA, size=2))
 
 
 
-# T-tests of behavioural variables - then fix plots with p-values.
-# https://www.datanovia.com/en/blog/how-to-perform-multiple-t-test-in-r-for-different-variables/
 
-wilcox.test(value, Age, paired = FALSE, alternative = "two.sided", conf.int = TRUE)
 
-library(tidyverse) # Data manipulation
-library(ggpubr) # Data visualization (including ggplot2)
-#------------------------------
+
+
+#-----------PART NOT USED FOR THESIS-----------------
 
 # One variable at a time. Normality tests and tests for difference between age groups.
 # BAS.Drive
@@ -179,27 +199,5 @@ Data$Hamilton.Scale %>%split(Data$Age)%>%map(~shapiro.test(.)) # test normality 
 yuenbt(Hamilton.Scale~Age, data=Data, tr = 0.2, nboot = 5000)
 # No significant difference in trimmed means between age groups on the BAS-DR scale,
 # Mdiff = -0.46 [-1.22, 0.29], Ty = -1.21, p = 0.22, NS.
-#----------
-
-# Create density plots
-p1=Data%>%ggplot(aes(x=BAS.Drive,fill=Age))+geom_rug(aes(color=Age))+geom_density(alpha=0.5)+theme_bw()+geom_vline(xintercept = c(4,12.18,11.84,16),linetype="dashed",color=c("black","red","blue","black"))+theme(legend.position = "none",axis.title.x = element_blank(),axis.title.y = element_blank())+ggtitle("BAS-DR")+theme(plot.title = element_text(hjust = 0.5))
-p2=Data%>%ggplot(aes(x=BAS.Fun,fill=Age))+geom_rug(aes(color=Age))+geom_density(alpha=0.5)+theme_bw()+geom_vline(xintercept = c(4,11.77,12.53,16),linetype="dashed",color=c("black","red","blue","black"))+theme(legend.position = "none",axis.title.x = element_blank(),axis.title.y = element_blank())+ggtitle("BAS-FS")+theme(plot.title = element_text(hjust = 0.5))
-p3=Data%>%ggplot(aes(x=BAS.Reward,fill=Age))+geom_rug(aes(color=Age))+geom_density(alpha=0.5)+theme_bw()+geom_vline(xintercept = c(5,16.82,17.1,20),linetype="dashed",color=c("black","red","blue","black"))+theme(legend.position = "none",axis.title.x = element_blank(),axis.title.y = element_blank())+ggtitle("BAS-RR")+theme(plot.title = element_text(hjust = 0.5))
-p4=Data%>%ggplot(aes(x=BIS,fill=Age))+geom_rug(aes(color=Age))+geom_density(alpha=0.5)+theme_bw()+geom_vline(xintercept = c(7,18.99,20.33,28),linetype="dashed",color=c("black","red","blue","black"))+theme(legend.position = "none",axis.title.x = element_blank(),axis.title.y = element_blank())+ggtitle("BIS")+theme(plot.title = element_text(hjust = 0.5)) # MEAN
-p5=Data%>%ggplot(aes(x=NEOFFI.Neuroticism,fill=Age))+geom_rug(aes(color=Age))+geom_density(alpha=0.5)+theme_bw()+geom_vline(xintercept = c(0,1.33,1.56,4),linetype="dashed",color=c("black","red","blue","black"))+theme(legend.position = "none",axis.title.x = element_blank(),axis.title.y = element_blank())+ggtitle("Neuroticism")+theme(plot.title = element_text(hjust = 0.5))
-p6=Data%>%ggplot(aes(x=NEOFFI.Extraversion,fill=Age))+geom_rug(aes(color=Age))+geom_density(alpha=0.5)+theme_bw()+geom_vline(xintercept = c(0,2.37,2.43,4),linetype="dashed",color=c("black","red","blue","black"))+theme(legend.position = "none",axis.title.x = element_blank(),axis.title.y = element_blank())+ggtitle("Extraversion")+theme(plot.title = element_text(hjust = 0.5)) # MEAN
-p7=Data%>%ggplot(aes(x=NEOFFI.OpennessForExperiences,fill=Age))+geom_rug(aes(color=Age))+geom_density(alpha=0.5)+theme_bw()+geom_vline(xintercept = c(0,2.55,2.78,4),linetype="dashed",color=c("black","red","blue","black"))+theme(legend.position = "none",axis.title.x = element_blank(),axis.title.y = element_blank())+ggtitle("Openness for Experience")+theme(plot.title = element_text(hjust = 0.5))
-p8=Data%>%ggplot(aes(x=NEOFFI.Agreeableness,fill=Age))+geom_rug(aes(color=Age))+geom_density(alpha=0.5)+theme_bw()+geom_vline(xintercept = c(0,2.77,2.75,4),linetype="dashed",color=c("black","red","blue","black"))+theme(legend.position = "none",axis.title.x = element_blank(),axis.title.y = element_blank())+ggtitle("Agreeableness")+theme(plot.title = element_text(hjust = 0.5)) # MEAN
-p9=Data%>%ggplot(aes(x=NEOFFI.Conscientiousness,fill=Age))+geom_rug(aes(color=Age))+geom_density(alpha=0.5)+theme_bw()+geom_vline(xintercept = c(0,2.99,2.52,4),linetype="dashed",color=c("black","red","blue","black"))+theme(legend.position = "none",axis.title.x = element_blank(),axis.title.y = element_blank())+ggtitle("Conscientiousness")+theme(plot.title = element_text(hjust = 0.5))
-p10=Data%>%ggplot(aes(x=STAI.TRAIT.ANXIETY,fill=Age))+geom_rug(aes(color=Age))+geom_density(alpha=0.5)+theme_bw()+geom_vline(xintercept = c(20,32.39,37.57,80),linetype="dashed",color=c("black","red","blue","black"))+theme(legend.position = "none",axis.title.x = element_blank(),axis.title.y = element_blank())+ggtitle("Trait Anxiety")+theme(plot.title = element_text(hjust = 0.5))
-p11=Data%>%ggplot(aes(x=UPPS.urgency,fill=Age))+geom_rug(aes(color=Age))+geom_density(alpha=0.5)+theme_bw()+geom_vline(xintercept = c(12,24.96,26.45,48),linetype="dashed",color=c("black","red","blue","black"))+theme(legend.position = "none",axis.title.x = element_blank(),axis.title.y = element_blank())+ggtitle("Urgency")+theme(plot.title = element_text(hjust = 0.5)) # MEAN
-p12=Data%>%ggplot(aes(x=UPPS.lack.premeditation,fill=Age))+geom_rug(aes(color=Age))+geom_density(alpha=0.5)+theme_bw()+geom_vline(xintercept = c(11,21.68,23.01,44),linetype="dashed",color=c("black","red","blue","black"))+theme(legend.position = "none",axis.title.x = element_blank(),axis.title.y = element_blank())+ggtitle("Premeditation")+theme(plot.title = element_text(hjust = 0.5)) # MEAN
-p13=Data%>%ggplot(aes(x=UPPS.lack.perseverance,fill=Age))+geom_rug(aes(color=Age))+geom_density(alpha=0.5)+theme_bw()+geom_vline(xintercept = c(10,17.49,20.04,40),linetype="dashed",color=c("black","red","blue","black"))+theme(legend.position = "none",axis.title.x = element_blank(),axis.title.y = element_blank())+ggtitle("Perseverance")+theme(plot.title = element_text(hjust = 0.5)) # MEAN
-p14=Data%>%ggplot(aes(x=UPPS.sens.seek,fill=Age))+geom_rug(aes(color=Age))+geom_density(alpha=0.5)+theme_bw()+geom_vline(xintercept = c(12,27.71,34.73,48),linetype="dashed",color=c("black","red","blue","black"))+theme(legend.position = "none",axis.title.x = element_blank(),axis.title.y = element_blank())+ggtitle("Sensation Seeking")+theme(plot.title = element_text(hjust = 0.5))
-p15=Data%>%ggplot(aes(x=Hamilton.Scale,fill=Age))+geom_rug(aes(color=Age))+geom_density(alpha=0.5)+theme_bw()+geom_vline(xintercept = c(0,1.75,2.13,17),linetype="dashed",color=c("black","red","blue","black"))+theme(legend.position = "none",axis.title.x = element_blank(),axis.title.y = element_blank())+ggtitle("HAM-D")+theme(plot.title = element_text(hjust = 0.5))
-
-plot1 <- ggarrange(p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,
-                   ncol = 3, nrow = 5,
-                   common.legend = TRUE, legend = "bottom") # ADD LEGEND ETC
 
 # END OF SCRIPT
