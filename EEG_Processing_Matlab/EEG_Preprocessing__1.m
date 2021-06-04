@@ -100,22 +100,14 @@ parfor s = 1:length(subject_list) % PARALLEL COMPUTING TOOLBOX (parfor)
     
     %% FILTERING
     
-    % HIGH-PASS FILTER 1 HZ
-    EEG = pop_eegfiltnew(EEG, 'locutoff',2);
-%     pop_eegfiltnew() - performing 415 point highpass filtering (Order = length - 1).
-%     pop_eegfiltnew() - transition band width: 2 Hz
-%     pop_eegfiltnew() - passband edge(s): 2 Hz
-%     pop_eegfiltnew() - cutoff frequency(ies) (-6 dB): 1 Hz
-%     pop_eegfiltnew() - filtering the data (zero-phase, non-causal)
+    % HIGH-PASS FILTER 1 HZ. 827 POINTS. CUTOFF FREQUENCY (~6dB): 0.5 Hz.
+    % ZERO-PHASE. NON-CAUSAL (FIRFILT).
+    EEG = pop_eegfiltnew(EEG, 'locutoff',1);
     
-    % LOW-PASS FILTER 49.5 HZ TO SUPPRESS POSSIBLE LINE NOISE
-    EEG = pop_eegfiltnew(EEG, 'hicutoff',44);
+    % LOW-PASS FILTER 45 HZ TO SUPPRESS LINE NOISE. 75 points.
+    % CUTOFF FREQUENCY (~6dB): 50.625 Hz. ZERO-PHASE, NON-CAUSAL (FIRFILT)
+    EEG = pop_eegfiltnew(EEG, 'hicutoff',45);
     EEG.setname = [subject '_Filter']; % NAME FOR DATASET MENU
-%     pop_eegfiltnew() - performing 77 point lowpass filtering.
-%     pop_eegfiltnew() - transition band width: 11 Hz
-%     pop_eegfiltnew() - passband edge(s): 44 Hz
-%     pop_eegfiltnew() - cutoff frequency(ies) (-6 dB): 49.5 Hz
-%     pop_eegfiltnew() - filtering the data (zero-phase, non-causal)
 
     % SAVE FILTERED DATA
     if (save_everything)
