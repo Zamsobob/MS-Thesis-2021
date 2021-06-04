@@ -6,10 +6,12 @@ library(ggpubr)
 library(kableExtra)
 library(Hmisc)
 library(RVAideMemoire)
-library(reshape2)
+# library(reshape2)
+library(rstatix)
 
 # Path to dataLemon file - insert your own
-exportdirxls <- "D:\\MPI_LEMON\\EEG_MPILMBB_LEMON\\EEG_Statistics\\DataLemon.xlsx"
+# exportdirxls <- "D:\\MPI_LEMON\\EEG_MPILMBB_LEMON\\EEG_Statistics\\DataLemon.xlsx"
+exportdirxls <- "D:\\MPI_LEMON\\EEG_MPILMBB_LEMON\\DataLemon.xlsx"
 
 # Import data
 Data <- data.frame(read_excel(exportdirxls, 1, col_names = TRUE))
@@ -74,14 +76,17 @@ cor.data.s$r <- round(cor.data.s$r, digits = 3)
 kable(cor.data.s$r, "html") %>% kable_styling("striped") %>% scroll_box(width = "100%")
 
 ##### Construct matrix of FDR corrected p-values for Spearman's rho
-cor.s.p.adj <- matrix(0,ncol = ncol(cor.data.s$P), nrow = nrow(cor.data.s$P))
-for(i in 1:ncol(cor.data.s$P)){
-    cor.s.p.adj[,i] <- p.adjust(cor.data.s$P[,i], method = "fdr")
-}
-colnames(cor.s.p.adj) <- colnames(cor.data.s$r)
-row.names(cor.s.p.adj) <- colnames(cor.data.s$r)
-cor.s.p.adj <- round(cor.s.p.adj, 3)
-kable(cor.s.p.adj, "html") %>% kable_styling("striped") %>% scroll_box(width = "100%")
+p.vals <- data.frame(cor.data.s$P) # matrix of p-values
+long.form <- p.vals %>% cor_gather() # convert to long and remove NA
+
+long.form$cor <- p.adjust(long.form$cor, method = "fdr") # adjust p-values
+long.spread <- long.form %>% cor_spread() # convert back
+
+p.vals.adj <- rbind(long.spread[19,], long.spread[1:18,]) # cleanup
+p.vals.adj<-data.frame(p.vals.adj[,-1])
+row.names(p.vals.adj) <- colnames(p.vals.adj)
+p.vals.adj <- round(p.vals.adj, 3)
+kable(p.vals.adj, "html") %>% kable_styling("striped") %>% scroll_box(width = "100%")
 
 #### Compute confidence intervals of all Spearman's rank correlation coefficients by bootstraping (B=5000)
 set.seed(123)
@@ -103,11 +108,4 @@ View(conf.ints)
 # [Importance of the Normality Assumption](https://doi.org/10.1146/annurev.publhealth.23.100901.140546)  
 # [P-values vs Confidence Intervals](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2689604/)  
 
-
-# FIXA FDR P VALUES ONE COLUMN. CAN I MELT AND THEN UNMELT?
-hejs <- melt(cor.data.s$P, na.rm = T)
-hej <- cbind(hejs$value, hejs$ID)
-
-library(tidyverse)
-hej.short <- tibble::rowid_to_column(hej, "ID") # add ID variable
-lu <- dcast(data=hej.short,formula = ID~hej,fun.aggregate = sum,value.var = "hej")
+# END OF SCRIPT
