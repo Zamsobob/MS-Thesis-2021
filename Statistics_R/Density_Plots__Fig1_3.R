@@ -40,7 +40,10 @@ plot <- ggarrange(p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,
                    common.legend = TRUE, legend = "bottom") # +theme(panel.border = element_rect(colour = "black", fill=NA, size=2))
 
 
-
+# Table 1: Descriptive Statistics. Used as a template only.
+tablesum <- stargazer(Data, type = "text",
+                      digits = 2,
+                      summary.stat = c("n","mean","sd","min","median","max")) # Use type = "html" to save html file
 
 
 
