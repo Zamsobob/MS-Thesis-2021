@@ -41,7 +41,8 @@ full.modelF8F7 <- lm(FAA.F8F7 ~ ., data = dataF8F7)
 
 #-----------------------------(F2-F1)-------------------------------------------
 
-# The **diagnostic plots** show residuals in four different ways ([1](http://www.sthda.com/english/articles/39-regression-model-diagnostics/161-linear-regression-assumptions-and-diagnostics-in-r-essentials/)):
+# The **diagnostic plots** show residuals in four different ways
+# (http://www.sthda.com/english/articles/39-regression-model-diagnostics/161-linear-regression-assumptions-and-diagnostics-in-r-essentials/)):
 # 1. Residuals vs Fitted. The predicted Y-values ($\hat{y}$) are on the X-axis, and the residuals (*e*) are
 # on the Y-axis. Used to check the linear relationship assumptions. A horizontal line, without distinct
 # patterns is an indication for a linear relationship.
@@ -222,19 +223,26 @@ model.metrics.F4F3[model.metrics.F4F3$.hat > hlt.F4F3,]
 resid.modelF4F3 <- residuals(full.modelF4F3)
 hist(resid.modelF4F3) # looks good
 
-# The **Q-Q plot** of residuals can be used to inspect the normality assumption. Some observations fall outside of the reference line.
+# The **Q-Q plot** of residuals can be used to inspect the normality assumption. Some observations fall
+# outside of the reference line.
 plot(full.modelF4F3, 2)
 
-# Due to the large sample size, a normality test should be able to provide more information. Neither the *Shaprio-Wilks* nor the *Anderson-Darling* test reject the null hypothesis of normally distributed residuals for the model.
+# Due to the large sample size, a normality test should be able to provide more information. Neither the
+# *Shaprio-Wilks* nor the *Anderson-Darling* test reject the null hypothesis of normally distributed
+# residuals for the model.
 shapiro.test(resid.modelF4F3)
 ad.test(resid.modelF4F3)
 
 ### 3. Homoscedasticity
-# The plot below shows that the variances of the residuals are not constant (heteroscedasticity). The red line, rather than being horizontal, has a slight inverse U-shaped form, indicating that the variance of the residuals are not constant.
+# The plot below shows that the variances of the residuals are not constant (heteroscedasticity). The red
+# line, rather than being horizontal, has a slight inverse U-shaped form, indicating that the variance of
+# the residuals are not constant.
 plot(full.modelF4F3, 3)
 
 #### 3.1 Studentized Breusch-Pagan test for heteroscedasticity.
-# The Breush-Pagan test and can be used to test for heteroscedasticity. It does not indicate heteroscedasticity. However, these tests are not necessarily better than inspecting the plots, so there is cause for some concern regarding this assumption.
+# The Breush-Pagan test and can be used to test for heteroscedasticity. It does not indicate
+# heteroscedasticity. However, these tests are not necessarily better than inspecting the plots, so there
+# is cause for some concern regarding this assumption.
 bp <- bptest(full.modelF4F3, studentize = TRUE)
 bp # looks good
 
@@ -577,7 +585,11 @@ colnames(se.mergeF8F7) <- c("Std. Error", "Std. Error Boot", "2.5 %", "97.5 %", 
 
 
 ### References:
-# Belsley, D.A., Kuh. E and Welsch, R.E., Regression Diagnostics: Identifying Influential Data and Sources of Collinearity, Wiley, New York, (1980).
+# Belsley, D.A., Kuh. E and Welsch, R.E., Regression Diagnostics: Identifying Influential Data and Sources
+#   of Collinearity, Wiley, New York, (1980).
 # Bruce, Peter, and Andrew Bruce. 2017. Practical Statistics for Data Scientists. O’Reilly Media.
-# James, Gareth, Daniela Witten, Trevor Hastie, and Robert Tibshirani. 2014. An Introduction to Statistical Learning: With Applications in R. Springer Publishing Company, Incorporated.
+# James, Gareth, Daniela Witten, Trevor Hastie, and Robert Tibshirani. 2014. An Introduction to Statistical
+#   Learning: With Applications in R. Springer Publishing Company, Incorporated.
 # Pek et al., 2018: https://doi.org/10.3389/fpsyg.2018.02104
+
+# END OF SCRIPT
